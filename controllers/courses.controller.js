@@ -26,9 +26,9 @@ module.exports.coursesController = {
     deleteCourse: async(req, res) => {
         try {
             const course = Course.findByIdAndDelete(req.params.id);
-            res.status(200).json(course)
+            res.status(200).json(course);
         } catch (error) {
-            res.json({error: error.message})
+            res.json({error: error.message});
         }
     }
 }
