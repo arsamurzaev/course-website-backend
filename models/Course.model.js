@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const courseSchema = mongoose.Schema({
-
-  image:[],
-  video:[],
-  name: String,
-  price: Number,
-  description: String,
-  location: String,
+  image: [],
+  video: [],
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  description: { type: String, required: true },
+  location: { type: String, default: "" },
+  online: { type: Boolean, default: true },
   isOwner: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
     default: null,
   },
