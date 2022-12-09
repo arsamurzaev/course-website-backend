@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 
 const courseSchema = mongoose.Schema({
-  image: [],
-  video: [],
+  image: Array,
   name: { type: String, required: true },
   price: { type: Number, required: true },
   description: { type: String, required: true },
   location: { type: String, default: "" },
+  social: String,
+  tags: Array,
   online: { type: Boolean, default: true },
   category: { type: String, required: true },
   isOwner: {

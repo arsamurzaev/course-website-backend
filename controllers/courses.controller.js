@@ -23,13 +23,30 @@ module.exports.coursesController = {
   // реализовать создание курса по айди
   createCourse: async (req, res) => {
     try {
-      const { name, price, description, location, isOwner } = req.body;
+      const {
+        name,
+        price,
+        description,
+        location,
+        isOwner,
+        social,
+        online,
+        category,
+        image,
+        tags,
+      } = req.body;
+
       const course = await Course.create({
         name,
         price,
         description,
         location,
         isOwner,
+        social,
+        online,
+        category,
+        image,
+        tags,
       });
       res.status(200).json(course);
     } catch (error) {
