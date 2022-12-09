@@ -21,6 +21,28 @@ module.exports.usersController = {
       res.json({ error: error.message });
     }
   },
+  editUser: async (req, res) => {
+    try {
+      const { nickname, password, email, avatar } = req.body;
+
+      const hash = await bcrypt.hash(password, Number(process.env.BCRYPT_HASH));
+
+      const user = await User.findByIdAndUpdate(req.params.id, {
+        avatar,
+        email,
+        nickname,
+        password: hash,
+      });
+
+      res.status(200).json(user);
+    } catch (error) {
+      res.json({ error: error.message });
+    }
+  },
+  getAvatar: async (req, res) => {
+    try {
+    } catch (error) {}
+  },
   // реализовать создание юзера
   registerUser: async (req, res) => {
     try {
@@ -49,22 +71,22 @@ module.exports.usersController = {
       const payload = {
         id: candidate._id,
         nickname: candidate.nickname,
-        login: candidate.nickname,
+        login: candidate.login,
         role: candidate.role,
         description: candidate.description,
       };
+
+      const valid = await bcrypt.compare(password, candidate.password);
 
       const token = await jwt.sign(payload, process.env.JWT_TOKEN, {
         expiresIn: "24h",
       });
 
-      const valid = await bcrypt.compare(password, candidate.password);
+      if (!valid) return res.json("Неправильный логин или пароль");
 
-      if (!valid || !candidate)
-        return res.json("Неправильный логин или пароль");
+      if (!candidate) return res.json("неправильный логин или пароль");
 
-      res.json(token);
-      console.log(token);
+      res.json({ token, id: candidate._id });
     } catch (error) {
       res.json({ error: error.message });
     }
@@ -75,6 +97,17 @@ module.exports.usersController = {
       const user = await User.findByIdAndDelete(req.params.id);
 
       res.status(200).json(user);
+    } catch (error) {
+      res.json({ error: error.message });
+    }
+  },
+  addAvatar: (req, res) => {
+    try {
+      const file = req.file;
+      if (!file) {
+        return res.status(400).json("Пожалуйста загрузите файл");
+      }
+      res.json(file);
     } catch (error) {
       res.json({ error: error.message });
     }

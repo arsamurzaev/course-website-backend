@@ -1,6 +1,7 @@
 const { coursesController } = require("../controllers/courses.controller");
 const { Router } = require("express");
-const authMiddlewares = require("../models/middlewares/auth.middlewares");
+const authMiddlewares = require("../middlewares/auth.middleware");
+const fileMiddleware = require("../middlewares/file.middleware");
 
 // написать роуты для курсов
 const router = Router();
@@ -13,5 +14,21 @@ router.get("/course/:id", coursesController.getCourseById);
 router.post("/course", authMiddlewares, coursesController.createCourse);
 //удаление курса
 router.delete("/course/:id", authMiddlewares, coursesController.deleteCourse);
+// 
+router.post(
+    "/upload-multiple",
+    fileMiddleware.array("myFiles", 5),
+    (req, res) => {
+      try {
+        const files = req.files;
+        if (!files) {
+          return res.status(400).json("Пожалуйста загрузите файлы");
+        }
+        res.send(files);
+      } catch (error) {
+        res.json({ error: error.message });
+      }
+    }
+  );
 
 module.exports = router;

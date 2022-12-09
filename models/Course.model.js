@@ -8,6 +8,7 @@ const courseSchema = mongoose.Schema({
   description: { type: String, required: true },
   location: { type: String, default: "" },
   online: { type: Boolean, default: true },
+  category: { type: String, required: true },
   isOwner: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",

@@ -45,4 +45,15 @@ module.exports.coursesController = {
       res.json({ error: error.message });
     }
   },
+  addImg: (req, res) => {
+    try {
+      const files = req.files;
+      if (!files) {
+        return res.status(400).json("Пожалуйста загрузите файлы");
+      }
+      res.json(files);
+    } catch (error) {
+      res.json({ error: error.message });
+    }
+  },
 };
